@@ -1,8 +1,13 @@
 // @ts-check
 import { test, expect } from '@playwright/test';
 
-test('com dados válidos deve permitir entrada no sistema', async ({ page }) => {
-  await page.goto('http://localhost:4000/');
+test.beforeEach(async ({ page }) => {
+    // Go to the starting url before each test.
+    await page.goto('http://localhost:4000/');
+  });
+
+test('Login com dados válidos deve permitir entrada no sistema', async ({ page }) => {
+  
 
   await page.getByRole('textbox', { name: 'Usuário' }).fill('julio.lima');
   await page.getByRole('textbox', { name: 'Senha' }).fill('123456');
@@ -11,12 +16,14 @@ test('com dados válidos deve permitir entrada no sistema', async ({ page }) => 
   await expect(page.getByRole('heading', { name: 'Realizar Transferência' })).toBeVisible();
 });
 
-// test('get started link', async ({ page }) => {
-//   await page.goto('https://playwright.dev/');
+test('Login com dados inválidos deve apresentar mensagem de erro', async ({ page }) => {
 
-//   // Click the get started link.
-//   await page.getByRole('link', { name: 'Get started' }).click();
 
-//   // Expects page to have a heading with the name of Installation.
-//   await expect(page.getByRole('heading', { name: 'Installation' })).toBeVisible();
-// });
+  await page.getByRole('textbox', { name: 'Usuário' }).fill('julio.lima');
+  await page.getByRole('textbox', { name: 'Senha' }).fill('456123');
+  await page.getByRole('button', { name: 'Entrar' }).click();
+
+  
+  
+  await expect(page.getByText('Erro no login. Tente novamente.')).toBeVisible();
+});
