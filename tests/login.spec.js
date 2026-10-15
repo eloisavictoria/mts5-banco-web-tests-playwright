@@ -4,6 +4,7 @@ import { test, expect } from '@playwright/test';
 test.beforeEach(async ({ page }) => {
     // Go to the starting url before each test.
     await page.goto('http://localhost:4000/');
+    await page.screenshot({ path: 'screenshots/login.png', fullPage: true });
   });
 
 test('Login com dados válidos deve permitir entrada no sistema', async ({ page }) => {
