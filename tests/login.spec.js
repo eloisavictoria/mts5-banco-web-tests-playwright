@@ -1,5 +1,7 @@
-// @ts-check
-import { test, expect } from '@playwright/test';
+
+//import { test, expect } from '@playwright/test';
+const { test, expect } = require('../fixture/credenciais');
+
 
 test.beforeEach(async ({ page }) => {
     // Go to the starting url before each test.
@@ -7,21 +9,21 @@ test.beforeEach(async ({ page }) => {
     await page.screenshot({ path: 'screenshots/login.png', fullPage: true });
   });
 
-test('Login com dados válidos deve permitir entrada no sistema', async ({ page }) => {
+test('Login com dados válidos deve permitir entrada no sistema', async ({ page, usuarios }) => {
   
 
-  await page.getByRole('textbox', { name: 'Usuário' }).fill('julio.lima');
-  await page.getByRole('textbox', { name: 'Senha' }).fill('123456');
+  await page.getByRole('textbox', { name: 'Usuário' }).fill(usuarios.valido.usuario);
+  await page.getByRole('textbox', { name: 'Senha' }).fill(usuarios.valido.senha);
   await page.getByRole('button', { name: 'Entrar' }).click();
   
   await expect(page.getByRole('heading', { name: 'Realizar Transferência' })).toBeVisible();
 });
 
-test('Login com dados inválidos deve apresentar mensagem de erro', async ({ page }) => {
+test('Login com dados inválidos deve apresentar mensagem de erro', async ({ page, usuarios }) => {
 
 
-  await page.getByRole('textbox', { name: 'Usuário' }).fill('julio.lima');
-  await page.getByRole('textbox', { name: 'Senha' }).fill('456123');
+  await page.getByRole('textbox', { name: 'Usuário' }).fill(usuarios.invalido.usuario);
+  await page.getByRole('textbox', { name: 'Senha' }).fill(usuarios.invalido.senha);
   await page.getByRole('button', { name: 'Entrar' }).click();
 
   
