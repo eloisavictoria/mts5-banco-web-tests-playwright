@@ -5,7 +5,7 @@ const { test, expect } = require('../fixture/credenciais');
 
 test.beforeEach(async ({ page }) => {
     // Go to the starting url before each test.
-    await page.goto('http://localhost:4000/');
+    await page.goto(process.env.BASE_URL || '/');
     await page.screenshot({ path: 'screenshots/login.png', fullPage: true });
   });
 
